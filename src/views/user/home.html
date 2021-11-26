@@ -47,8 +47,6 @@
 
             ipc.on('message', (e, args) => {
 
-                console.log(args);
-
                 messageCount++;
 
                 const stats = document.getElementById('messageCount');
@@ -56,8 +54,6 @@
                 stats.innerHTML = messageCount.toString();
 
                 const div = document.getElementById("messages");
-
-                console.log(args.tags['tmi-sent-ts'])
 
 
                 const date = new Date();
@@ -72,8 +68,6 @@
                 div.appendChild(element)
             })
 
-
-            console.log(store.get('user').profile_image_url)
             const doc = document.getElementsByTagName("html")[0];
             doc.innerHTML = doc.innerHTML
                 .replaceAll('USERPHOTO', store.get('user').profile_image_url.replace('300x300', '600x600'))

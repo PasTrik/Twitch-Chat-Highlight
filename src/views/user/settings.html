@@ -70,7 +70,6 @@
 
             if (listStore) {
                 listStore.forEach(tag => {
-                    console.log(tag)
                     list.appendChild(createElement(tag));
                 })
             }
@@ -78,9 +77,7 @@
             document.querySelectorAll(".deleteTag").forEach(el => {
                 el.addEventListener("click", (event) => {
                     const tag = event.target.parentElement.lastElementChild.innerHTML;
-                    console.log(listStore)
                     const newList = listStore.filter(item => item !== tag);
-                    console.log(newList)
 
                     store.set("highlight", newList);
                     event.target.parentElement.remove();

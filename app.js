@@ -56,8 +56,6 @@ expressApp.get('/callback', async (req, res) => {
     if (req.query.content) {
         const hash = Object.fromEntries(decodeURIComponent(req.query.content).split('&').map((v) => v.split('=')));
 
-        console.log(hash.access_token)
-
         store.set('access_token', hash.access_token);
 
         userData = await axios({
@@ -95,8 +93,6 @@ ipcMain.on('loginUser', async (e, args) => {
         await loginClient()
         client.on('message', (channel, tags, message, self) => {
             if (self) return;
-
-            console.log('???')
 
             const highlight = store.get('highlight');
 
