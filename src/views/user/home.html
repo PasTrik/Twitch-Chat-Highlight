@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Home - Twitch chat highlighter</title>
+
+        <link rel="stylesheet" href="../../../src/assets/css/main.css">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&family=Roboto:wght@400;700&display=swap"
+              rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    </head>
+
+    <body>
+        <div class="flex flex-row justify-between h-full relative">
+            <div class="flex flex-col-reverse flex pr-2 w-full" style="height: fit-content" id="messages">
+
+            </div>
+            <div class="flex flex-col items-center md:pt-14 md:px-20 px-14 justify-between pt-7 h-full shadow-xl bg-gray-800">
+                <div class="flex items-center flex-col text-center">
+                    <img src="USERPHOTO" class="w-24 h-24 rounded-lg" alt="USERNAME"/>
+                    <h1 class="text-2xl font-bold mt-2">USERNAME <a class="text-sm" href="./settings.html">Settings</a>
+                    </h1>
+                    <div class="text-center">
+                        <h2 class="text-xl font-bold mt-8">Some stats</h2>
+                        <div class="mt-4">
+                            <h1 class="font-bold">Number of message :</h1>
+                            <span id="messageCount">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-14 text-sm text-center">Developed by <a class="underlineC cursor-pointer" id="moiwsh">PasTrik</a>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const store = require('../../../references').store;
+            const ipc = require('electron').ipcRenderer;
+
+
+            ipc.send('loginUser');
+
+            let messageCount = 0;
+
+            ipc.on('message', (e, args) => {
+
+                console.log(args);
+
+                messageCount++;
+
+                const stats = document.getElementById('messageCount');
+
+                stats.innerHTML = messageCount.toString();
+
+                const div = document.getElementById("messages");
+
+                console.log(args.tags['tmi-sent-ts'])
+
+
+                const date = new Date();
+
+                // date.setUTCDate(date.getUTCDate() + 1);
+
+                let s = `<div class="px-4 py-2 border-b w-full text-md"><span class="mx-2 text-sm opacity-80">${date.getHours() + ":" + date.getMinutes()}</span><span>${args.tags.username}</span> : <span>${args.message}</span>`
+
+                const element = document.createElement("div");
+                element.innerHTML = s;
+
+                div.appendChild(element)
+            })
+
+
+            console.log(store.get('user').profile_image_url)
+            const doc = document.getElementsByTagName("html")[0];
+            doc.innerHTML = doc.innerHTML
+                .replaceAll('USERPHOTO', store.get('user').profile_image_url.replace('300x300', '600x600'))
+                .replaceAll('USERNAME', store.get('user').display_name)
+
+            document.getElementById("moiwsh").addEventListener("click", () => {
+                require('electron').shell.openExternal("https://illyes.tech")
+            })
+        </script>
+    </body>
+</html>

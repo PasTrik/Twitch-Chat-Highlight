@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Callback</title>
+        <script>let done = false;
+        let error = false;
+        let hash = document.location.hash;
+        if (hash.startsWith('#')) hash = hash.slice(1);
+        fetch('http://localhost:<%= port %>/callback?content=' + encodeURIComponent(hash), {
+            method: 'GET',
+            mode: 'cors'
+        }).then(() => {
+            done = true;
+            window.open(window.location, '_self').close()
+        }).catch((err) => error = err);</script>
+    </head>
+    <body><p id="message">Communication avec Welcome Twitch ...</p>
+        <script>let msg = document.getElementById('message');
+        window.msgInterval = setInterval(() => {
+            if (done && !error) {
+                clearInterval(window.msgInterval);
+                msg.innerHTML = 'Vous pouvez fermer cette page :)';
+            } else if (error) {
+                clearInterval(window.msgInterval);
+                msg.innerHTML = 'Error: <code>' + error.message + '</code>'
+            }
+        }, 500);</script>
+    </body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Loading - Twitch chat highlight</title>
+        <link rel="stylesheet" href="../../src/assets/css/main.css">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&family=Roboto:wght@400;700&display=swap"
+              rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    </head>
+
+    <body>
+
+        <div class="flex flex-col h-screen w-full items-center justify-center">
+            <h1 class="montserrat font-black text-4xl" id="loading">Loading...</h1>
+            <p>Please wait while we load the app...</p>
+            <p class="mt-4 text-sm">Developed by <a class="underlineC cursor-pointer" id="moiwsh">PasTrik</a></p>
+        </div>
+
+
+        <script>
+            let count = 0;
+
+            setInterval(function () {
+                document.getElementById("loading").innerHTML = "Loading" + ".".repeat(count)
+
+                count++;
+
+                if (count >= 4) count = 0;
+            }, 250);
+
+            document.getElementById("moiwsh").addEventListener("click", () => {
+                require('electron').shell.openExternal("https://illyes.tech")
+            })
+
+            const ipcRenderer = require('electron').ipcRenderer;
+
+            const user = ipcRenderer.sendSync('getUser');
+
+            if (!user) {
+                    window.open(require('../../references').codeflow);
+            } else {
+                window.location.href = "user/home.html"
+            }
+
+
+            ipcRenderer.on('switch', (event, args) => {
+                window.location.href = "user/home.html"
+            })
+
+
+        </script>
+    </body>
+</html>

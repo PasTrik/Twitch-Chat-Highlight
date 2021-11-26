@@ -1,0 +1,35 @@
+{
+  "name": "twitch-chat-highlight",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder build --win"
+  },
+  "keywords": ["twitch", "chat", "highlight"],
+  "author": "PasTrik (https://illyes.tech)",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^16.0.1",
+    "electron-builder": "^22.14.5"
+  },
+  "dependencies": {
+    "axios": "^0.24.0",
+    "ejs": "^3.1.6",
+    "electron-store": "^8.0.1",
+    "express": "^4.17.1",
+    "postcss": "^8.4.0",
+    "tmi.js": "^1.8.5"
+  },
+
+  "build": {
+    "appId": "com.pastrik.twitch-chat-highlight",
+    "productName": "Twitch Chat Highlight",
+    "copyright": "Copyright © 2021 PasTrik",
+    "directories": {
+      "buildResources": "build"
+    },
+    "files": ["**/*"]
+  }
+}
